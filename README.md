@@ -2,7 +2,7 @@
 
 **Build Status Bagde**
 
-Project Description
+A collection of analyzers for Dota2 matches.
 
 **Project Status:**
 
