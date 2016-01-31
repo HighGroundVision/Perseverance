@@ -1,4 +1,5 @@
 ﻿using HGV.Crystalys;
+using HGV.Radiance;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -23,25 +24,21 @@ namespace HGV.Perserverance
 			   4. Return the details
 			*/
 
-			var mangoUrl = ConfigurationManager.AppSettings["UrlToMango"].ToString();
-			var username = ConfigurationManager.AppSettings["DotaGameClientUserName"].ToString();
-			var password = ConfigurationManager.AppSettings["DotaGameClientPassword"].ToString();
-			var timeout = int.Parse(ConfigurationManager.AppSettings["DotaGameClientDownloadReplayTimeout"].ToString());
+			var mangoUrl = ConfigurationManager.AppSettings["Mango.Url"].ToString();
+
+			var service = new SteamUserService();
+			var userInfo = await service.GetNextAvailable();
 
 			using (var webClient = new WebClient())
-			using (var dotaClient = new DotaGameClient(username, password, null))
+			using (var dotaClient = new DotaGameClient(userInfo.Username, userInfo.Password, userInfo.Sentry))
 			{
-				dotaClient.Connect();
+				dotaClient.Connect(TimeSpan.FromMinutes(1));
 
-				var replayData = dotaClient.DownloadReplay(id, TimeSpan.FromMinutes(timeout));
+				var replayData = dotaClient.DownloadReplay(id, TimeSpan.FromMinutes(1));
 
 				var bjson = webClient.UploadData(mangoUrl, replayData);
 				var json = Convert.ToBase64String(bjson);
-
-
 			}
-
-
 		}
 
 	}
