@@ -42,7 +42,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="HGV.Crystalys, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\HGV.Crystalys.1.0.0.5\lib\net46\HGV.Crystalys.dll</HintPath>
+      <HintPath>..\packages\HGV.Crystalys.1.0.0.6\lib\net46\HGV.Crystalys.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="HGV.Radiance, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -93,6 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="JsonMessageTest.cs" />
+    <Compile Include="MatchEventHanlderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

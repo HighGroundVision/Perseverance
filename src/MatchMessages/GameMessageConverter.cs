@@ -18,6 +18,7 @@ namespace HGV.Perserverance.MatchMessages
 		public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
 		{
 			JObject item = JObject.Load(reader);
+			
 			var type = item["type"].Value<int>();
 			switch (type)
 			{
@@ -28,7 +29,7 @@ namespace HGV.Perserverance.MatchMessages
 				case 2:
 					return item.ToObject<UnitSummary>();
 				default:
-					throw new ArgumentOutOfRangeException(nameof(type));
+					return new UnknownTypeMessage() { type = type, data = item.ToString() };
 			}
 		}
 
