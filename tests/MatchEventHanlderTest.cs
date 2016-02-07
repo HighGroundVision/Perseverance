@@ -12,10 +12,12 @@ namespace HGV.Perserverance.Tests
 		[Fact]
 		public async Task GetEvents()
 		{
-			var handler = new MatchEventHanlder();
-			var events = await handler.GetEvents(2115905708);
-
-			Assert.NotEmpty(events);
+			using (var handler = await MatchEventHanlder.GetHandler())
+			{
+				var data = await handler.DownloadReplay(2115905708);
+				var json = await handler.ParseReplay(data);
+				var events = await handler.GetEventsFromReplay(json);
+			}
 		}
 	}
 }

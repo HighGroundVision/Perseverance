@@ -39,11 +39,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="HGV.Crystalys, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\HGV.Crystalys.1.0.0.6\lib\net46\HGV.Crystalys.dll</HintPath>
+      <HintPath>..\packages\HGV.Crystalys.1.0.0.12\lib\net46\HGV.Crystalys.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="HGV.Radiance, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\HGV.Radiance.1.0.0.4\lib\net46\HGV.Radiance.dll</HintPath>
+      <HintPath>..\packages\HGV.Radiance.1.0.0.5\lib\net46\HGV.Radiance.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">

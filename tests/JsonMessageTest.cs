@@ -20,8 +20,6 @@ namespace HGV.Perserverance.Tests
 			json.Append("{\"type\":3,\"time\":\"00:01:41\",\"hero\":97,\"level\":0,\"kills\":0,\"deaths\":0,\"assists\":0},");
 			json.Append("{\"type\":1,\"elapsed\":\"00:00:33\",\"pregame_start\":\"00:02:37\",\"game_start\":\"00:03:52\",\"game_end\":\"00:53:38\"}]");
 			
-			//"elapsed":33.6398947s,"pregame_start":2m37s,"game_start":3m52s,"game_end":53m38s
-
 			var items = JsonConvert.DeserializeObject<List<BaseMessage>>(json.ToString(), new GameMessageConverter());
 
 			Assert.NotEmpty(items);

@@ -14,83 +14,112 @@ using System.Threading.Tasks;
 
 namespace HGV.Perserverance
 {
-	public class MatchEventHanlder
+	public class MatchEventHanlder : IDisposable
 	{
+		protected DotaGameClient DotaClient { get; set; }
 
-		public async Task<List<BaseMessage>> GetEvents(long id)
+		protected MatchEventHanlder()
+		{
+		}
+
+		public static async Task<MatchEventHanlder> GetHandler()
+		{
+			var handler = new MatchEventHanlder();
+			await handler.Connect();
+			return handler;
+		}
+
+		protected async Task Connect()
 		{
 			var userService = new SteamUserService();
-			var userInfo = await userService.GetNextAvailable();
+			SteamUser userInfo = null;
 
-			byte[] replayData = null;
-			using (var client = new DotaGameClient(userInfo.Username, userInfo.Password, userInfo.Sentry))
-			{
-				client.OnConnected += (o, e) => {
-					if (e.Result)
-						Trace.TraceInformation("Connected to Steam, Logging in '{0}'", userInfo.Username);
-					else
-						throw new ApplicationException("Unable to connect to Steam");
-						//Trace.TraceError("Unable to connect to Steam");
-				};
-				client.OnDisconnected += (o, e) => {
-					e.Reconnect = true;
+			try
+			{	
+				userInfo = await userService.GetNextAvailable();
 
-					Trace.TraceInformation("Disconnected from Steam.");
-				};
-				client.OnLoggedOn += (o, e) => {
-					if (e.Sucess)
-						Trace.TraceInformation("Successfully logged on!");
-					else
-						throw new ApplicationException(string.Format("Unable to logon to Steam: {0}", e.Result));
-						//Trace.TraceError("Unable to logon to Steam: {0}", e.Result);
-				};
-				client.OnAccountLogonDenied += (o, e) => {
-					//Trace.TraceInformation("Regenerate Sentry File Hash for {0}.", userInfo.Username);
-					userService.Trip(userInfo.Id);
-					throw new ApplicationException("Tripped Account Logon Denied");
-				};
-				client.OnClientWelcome += (o, e) => {
-					Trace.TraceInformation("Connected to GC. Version: {0}", e.Message.version);
-				};
+				this.DotaClient = new DotaGameClient(userInfo.Username, userInfo.Password, userInfo.Sentry);
 
-				client.Connect();
-
-				replayData = client.DownloadReplay(id);
+				await this.DotaClient.Connect();
 			}
+			catch (Exception)
+			{
+				if(userInfo != null)
+					await userService.Trip(userInfo.Id);
 
+				throw;
+			}
+		}
+
+		public void Dispose()
+		{
+			this.DotaClient.Dispose();
+		}
+
+		public async Task<byte[]> DownloadReplay(ulong id)
+		{
+			var replayData = await this.DotaClient.DownloadReplay(id);
 			if (replayData == null)
 				throw new ArgumentNullException(nameof(replayData));
 
+			return replayData;
+		}
+
+		public async Task StoreRawReplay(byte[] data)
+		{
+			await Task.Run(() =>
+			{
+				throw new NotImplementedException();
+			});
+		}
+
+		public async Task<string> ParseReplay(byte[] data)
+		{
 			string json = null;
 			using (var client = new HttpClient())
 			{
 				var mangoUrl = ConfigurationManager.AppSettings["Mango.Url"].ToString();
-				var reponse = await client.PostAsync(mangoUrl, new ByteArrayContent(replayData));
+				var reponse = await client.PostAsync(mangoUrl, new ByteArrayContent(data));
 				json = await reponse.Content.ReadAsStringAsync();
 			}
 
 			if (json == null)
 				throw new ArgumentNullException(nameof(json));
 
-			var items = JsonConvert.DeserializeObject<List<BaseMessage>>(json, new GameMessageConverter());
-			if (items == null)
-				throw new ArgumentNullException(nameof(items));
+			return json;
+		}
 
-			if (items.Count == 0)
-				throw new ArgumentOutOfRangeException(nameof(items));
+		public async Task StoreParsedReplay(string json)
+		{
+			await Task.Run(() =>
+			{
+				throw new NotImplementedException();
+			});
+		}
 
-			var header = items.OfType<Header>().FirstOrDefault();
-			if (header == null)
-				throw new ArgumentNullException(nameof(header));
+		public async Task<List<BaseMessage>> GetEventsFromReplay(string json)
+		{
+			return await Task.Run<List<BaseMessage>>(() => {
+				var items = JsonConvert.DeserializeObject<List<BaseMessage>>(json, new GameMessageConverter());
+				if (items == null)
+					throw new ArgumentNullException(nameof(items));
 
-			var footer = items.OfType<Footer>().FirstOrDefault();
-			if (footer == null)
-				throw new ArgumentNullException(nameof(footer));
+				if (items.Count == 0)
+					throw new ArgumentOutOfRangeException(nameof(items));
 
-			foreach (var item in items.OfType<GameMessage>())
-				item.time = item.time.Subtract(footer.game_start);
+				var header = items.OfType<Header>().FirstOrDefault();
+				if (header == null)
+					throw new ArgumentNullException(nameof(header));
 
-			return items;
+				var footer = items.OfType<Footer>().FirstOrDefault();
+				if (footer == null)
+					throw new ArgumentNullException(nameof(footer));
+
+				foreach (var item in items.OfType<GameMessage>())
+					item.time = item.time.Subtract(footer.game_start);
+
+				return items;
+			});
 		}
 	}
 }
