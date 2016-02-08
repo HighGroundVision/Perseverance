@@ -75,13 +75,46 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MatchEventHanlder.cs" />
+    <Compile Include="MatchMessages\Ability.cs" />
+    <Compile Include="MatchMessages\AegisDenied.cs" />
+    <Compile Include="MatchMessages\AegisStolen.cs" />
+    <Compile Include="MatchMessages\AegisTaken.cs" />
+    <Compile Include="MatchMessages\BarraksKill.cs" />
     <Compile Include="MatchMessages\BaseMessage.cs" />
+    <Compile Include="MatchMessages\BuildingKill.cs" />
+    <Compile Include="MatchMessages\BuyBack.cs" />
+    <Compile Include="MatchMessages\Chat.cs" />
+    <Compile Include="MatchMessages\CourierLost.cs" />
+    <Compile Include="MatchMessages\CourierRespawned.cs" />
+    <Compile Include="MatchMessages\Damage.cs" />
+    <Compile Include="MatchMessages\Death.cs" />
+    <Compile Include="MatchMessages\EffigyKill.cs" />
+    <Compile Include="MatchMessages\FirstBlood.cs" />
     <Compile Include="MatchMessages\Footer.cs" />
     <Compile Include="MatchMessages\GameMessage.cs" />
     <Compile Include="MatchMessages\GameMessageConverter.cs" />
+    <Compile Include="MatchMessages\Glyphed.cs" />
+    <Compile Include="MatchMessages\Gold.cs" />
     <Compile Include="MatchMessages\Header.cs" />
+    <Compile Include="MatchMessages\Heal.cs" />
+    <Compile Include="MatchMessages\Item.cs" />
+    <Compile Include="MatchMessages\KillStreak.cs" />
+    <Compile Include="MatchMessages\KillRoshan.cs" />
+    <Compile Include="MatchMessages\MegaCreeps.cs" />
+    <Compile Include="MatchMessages\MultiKill.cs" />
+    <Compile Include="MatchMessages\Prediction.cs" />
+    <Compile Include="MatchMessages\Purchase.cs" />
+    <Compile Include="MatchMessages\RuneBottle.cs" />
+    <Compile Include="MatchMessages\RunePickup.cs" />
+    <Compile Include="MatchMessages\TowerDeny.cs" />
+    <Compile Include="MatchMessages\TowerKill.cs" />
+    <Compile Include="MatchMessages\UnitPosition.cs" />
     <Compile Include="MatchMessages\UnitSummary.cs" />
+    <Compile Include="MatchMessages\UnitEconomy.cs" />
     <Compile Include="MatchMessages\UnknownTypeMessage.cs" />
+    <Compile Include="MatchMessages\WardObserver.cs" />
+    <Compile Include="MatchMessages\WardSentry.cs" />
+    <Compile Include="MatchMessages\XP.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
