@@ -12,11 +12,11 @@ namespace HGV.Perserverance.MatchMessages
 {
     public class Ability : GameMessage
     {
-        public DateTime iat { get; set; }
-        public DateTime iah { get; set; }
-        public DateTime ivr { get; set; }
-        public DateTime ivd { get; set; }
-        public string attacker { get; set; }
+        public bool iat { get; set; } // GetIsAttackerIllusion
+		public bool iah { get; set; } // GetIsAttackerHero
+		public bool ivr { get; set; } // GetIsVisibleRadiant
+		public bool ivd { get; set; } // GetIsVisibleDire
+		public string attacker { get; set; }
         public string inflictor { get; set; }
         public int ability_level { get; set; }
     }
