@@ -92,6 +92,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameMessagesTest.cs" />
     <Compile Include="JsonMessageTest.cs" />
     <Compile Include="MatchEventHanlderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
