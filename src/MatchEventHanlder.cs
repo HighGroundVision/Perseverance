@@ -53,7 +53,11 @@ namespace HGV.Perserverance
 
 		public void Dispose()
 		{
-			this.DotaClient.Dispose();
+			if(this.DotaClient != null)
+			{
+				this.DotaClient.Dispose();
+				this.DotaClient = null;
+			}
 		}
 
 		public async Task<byte[]> DownloadReplay(ulong id)
