@@ -12,10 +12,18 @@ namespace HGV.Perserverance.Tests
 		[Fact]
 		public async Task GetEvents()
 		{
-			using (var handler = await MatchEventHanlder.GetHandler())
+			var storageService = new MatchStorageService();
+
+			using (var handler = await MatchReplayHanlder.GetHandler())
 			{
-				var data = await handler.DownloadReplay(2115905708);
+				ulong matchId = 2115905708;
+
+				var data = await handler.DownloadReplay(matchId);
+				await storageService.StoreRawReplay(matchId, data);
+
 				var json = await handler.ParseReplay(data);
+				await storageService.StoreParsedReplay(matchId, json);
+
 				var events = await handler.GetEventsFromReplay(json);
 			}
 		}

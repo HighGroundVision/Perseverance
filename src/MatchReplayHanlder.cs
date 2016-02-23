@@ -14,22 +14,24 @@ using System.Threading.Tasks;
 
 namespace HGV.Perserverance
 {
-	public class MatchEventHanlder : IDisposable
+	public sealed class MatchReplayHanlder : IDisposable
 	{
-		protected DotaGameClient DotaClient { get; set; }
+		private const string MANGO_URL_KEY = "Mango.Url";
 
-		protected MatchEventHanlder()
+		private DotaGameClient DotaClient { get; set; }
+
+		private MatchReplayHanlder()
 		{
 		}
 
-		public static async Task<MatchEventHanlder> GetHandler()
+		public static async Task<MatchReplayHanlder> GetHandler()
 		{
-			var handler = new MatchEventHanlder();
+			var handler = new MatchReplayHanlder();
 			await handler.Connect();
 			return handler;
 		}
 
-		protected async Task Connect()
+		private async Task Connect()
 		{
 			var userService = new SteamUserService();
 			SteamUser userInfo = null;
@@ -69,20 +71,12 @@ namespace HGV.Perserverance
 			return replayData;
 		}
 
-		public async Task StoreRawReplay(byte[] data)
-		{
-			await Task.Run(() =>
-			{
-				throw new NotImplementedException();
-			});
-		}
-
 		public async Task<string> ParseReplay(byte[] data)
 		{
 			string json = null;
 			using (var client = new HttpClient())
 			{
-				var mangoUrl = ConfigurationManager.AppSettings["Mango.Url"].ToString();
+				var mangoUrl = ConfigurationManager.AppSettings[MANGO_URL_KEY].ToString();
 				var reponse = await client.PostAsync(mangoUrl, new ByteArrayContent(data));
 				json = await reponse.Content.ReadAsStringAsync();
 			}
@@ -91,14 +85,6 @@ namespace HGV.Perserverance
 				throw new ArgumentNullException(nameof(json));
 
 			return json;
-		}
-
-		public async Task StoreParsedReplay(string json)
-		{
-			await Task.Run(() =>
-			{
-				throw new NotImplementedException();
-			});
 		}
 
 		public async Task<List<BaseMessage>> GetEventsFromReplay(string json)
